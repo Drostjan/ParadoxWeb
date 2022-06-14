@@ -1,0 +1,1014 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica,Arial,sans-serif,"Apple Color Emoji";
+    
+} 
+html {
+    margin: 0;
+    padding: 0;
+}
+/*
+========================================
+                MENÚ            
+========================================
+*/
+.menu {
+    min-height: 5vh;/*Para que se vea el menú de forma proporcional con las otras cajas*/
+    background-color: ghostwhite;
+    width: 100%;
+    display: flex;/*Para distribuir las cajas del logo, categorias y iconos*/
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    max-width: 2000px;
+    margin: 0 auto;
+    z-index: 100; /*para que el menu sea visible en todo momento*/
+}
+.menu a {
+    font-size: 18px;
+    color: black;
+    padding: 5px 3%;
+    text-decoration: none;/*Quitar subrayado por defecto*/
+    cursor: pointer;/*Cambia el cursor(Solo afecta al icono de iniciar sesión ya que no está asociado a ninguna página).*/
+    transition: 0.5s;/*Una vez pasas el ratón por encima del logo y categorias, se espera 0.5 segundos el texto a volver a su estado sin animación.*/
+    font-family:"Helvetica Neue",Arial,sans-serif;
+}
+.menu-categorias a:hover {/*Transiciones al pasar el cursor por encima de las categorias.*/
+    transition: 0.1s;
+    transform: scale(1.05);
+    color: grey;
+}
+.menu:hover {/*Cambiar el fondo del menú al pasar el cursor por encima.*/
+    transition: 0.5s;
+    background-color: white;
+}
+.menu-logo {
+    display: flex;
+    flex: 20%;
+    align-items: left;
+}
+.menu-logo a {
+    font-weight: bold;/*Logo en negrita*/
+    margin-left: 10px;
+    font-size: 18px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    padding-left: 25px;
+}
+.menu-logo a:hover {/*Al pasar el ratón por el logo aumenta el tamaño*/
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+.menu-categorias {
+    display: flex;
+    flex: 50%;
+    justify-content: center;
+    align-items: center;
+}
+.menu-categorias a {
+    padding: 15px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+.menu-iconos {
+    display: flex;
+    flex:20%;
+    justify-content: right;
+    align-items: center;
+}
+.menu-iconos a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 25px;
+    margin-right: 25px;
+    font-size: 15px;
+    justify-content: center;
+}
+#login-icon, #fav-icon, #cesta-icon, #perfil-icon {
+    opacity: 0.69;
+}
+#login-icon:hover, #fav-icon:hover, #cesta-icon:hover, #perfil-icon:hover {
+    opacity: 1;
+    transition: 0.3s;
+    transform: scale(1.15);
+}
+@media screen and (min-width: 650px) {
+    #menu_responsive * {
+        display: none;
+    }
+}
+@media screen and (max-width: 650px) {
+    .menu-categorias {
+        position: absolute;
+        float: none;
+        display: none;
+    }
+    #fav {
+        display:none;
+    }
+    .menu-logo {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+    #menu_responsive {
+        justify-content: left;
+        align-items: left;
+    }
+    #menu_responsive * {
+        visibility: visible;
+    }
+    .boton_menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        -webkit-appearance: none;
+        border: 0;
+        background: transparent;
+        border-radius: 0;
+        height: 60px;
+        width: 30px;
+        cursor: pointer;
+        margin-left: 12px;
+    }
+    .icon-bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: black;
+        transition: .4s;
+    }
+    .icon-bar + .icon-bar {
+        margin-top: 5px; /* margen de la barra de menu */
+    }
+    
+    #menu_responsive:focus-within .boton_menu {
+        pointer-events: none; /* "Evento del cursor" */
+    }
+
+    #menu_responsive:focus-within .icon-bar:nth-of-type(1) {
+        transform: translate3d(0,8px,0) rotate(-45deg); /* Rotar la primera barra del icono del menu */
+    }
+    #menu_responsive:focus-within .icon-bar:nth-of-type(2) {
+        opacity: 0; /*Opacidad 0 a la barra del medio*/
+    }
+    #menu_responsive:focus-within .icon-bar:nth-of-type(3) {
+        transform: translate3d(0,-8px,0) rotate(45deg); /* Rotar la primera barra del icono del menu */
+    }
+    #menu_contenido {
+        margin-top: 60px;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        position: fixed;
+        background-color: whitesmoke;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%); /* Para que se despliegue la barra de menu */
+        transition: transform 0.5s;
+    }
+    #menu_contenido ul {
+        display: flex;
+        flex-direction: column; /* Para que el contenido del menu se muestre en columnas */
+    }
+    #menu_contenido  a {
+        padding: 15px 0;
+        text-transform: uppercase;
+    }
+    #menu_contenido a:hover {
+        transition: 0.3s;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    #menu_responsive:focus-within #menu_contenido {
+        transform: none; /* El menu se esconda cuando operemos a otra parte que no sea el menu */
+    }
+    .menu {
+        position: sticky;
+        top: 0px;/* El menu se queda siempre arriba de la pantalla */
+    }
+}
+/*
+========================================
+                LOGIN
+========================================
+*/
+/* Ancho al 100% de los inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 10px 20px;
+    margin: 8px 0px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+/* Estilo de los botones */
+button {
+    background-color: darkgray;
+    transition: 0.6s;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+}
+button:hover{
+    background-color: dimgray;
+    text-decoration: underline;
+}
+/* Centrar la posicion de la ventana login y el boton de cerrar */
+.contenedor_ventana_login {
+    text-align: center;
+    margin: 10px 0 10px 0;
+    position: relative;
+    cursor: default;
+}
+.login_container {
+    padding: 0px 20px;
+}
+span.psw {
+    cursor: default;
+    float: right;
+    margin-bottom: 10px;
+}
+a.psw_href {
+    text-decoration: none;
+    color: darkgray;
+}
+a.psw_href:hover {
+    text-decoration: underline;
+}
+span.register {
+    width: 100%;
+    cursor: default;
+    display: inline-block;
+    text-align: center;
+    padding-top: 10px;
+}
+a.register_href {
+    text-decoration: none;
+    color: darkgray;
+}
+a.register_href:hover {
+    text-decoration: underline;
+}
+/* La ventana del login */
+.ventana_login {
+    display: none; /* Oculto */
+    position: fixed;
+    z-index: 1; /* Para que se quede arriba */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Habilitar "scroll" */
+    background-color: black; /* Color del fondo de atrás de la ventana */
+    background-color: rgba(0,0,0,0.6); /* Opacidad del fondo */
+    backdrop-filter: blur(3px); /* Aplicar un filtro de desenfoque a la ventana del login */
+    padding-top: 50px;
+}
+/* El contenido del login */
+.contenido_login {
+    background-color: white;
+    margin: 5% auto 15% auto; /* 5% desde arriba, 15% desde abajo y centrado */
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 10px;
+    width: 50%; /* El tamaño de la ventanita del login */
+    height: 370px;
+}
+/* Alargar la ventana del login cuando llega a 491px */
+@media screen and (max-width: 491px) {
+    .contenido_login {
+        height: 400px;
+    }
+}
+/* Hacer más ancho la ventana del login para que no sea tan estrecha */
+@media screen and (max-width: 450px) {
+    .contenido_login {
+        width: 80%;
+    }
+}
+/* Para que la ventana del login no sea tan ancho */
+@media screen and (min-width: 1200px) {
+    .contenido_login {
+        width: 30%;
+    }
+}
+/* Boton cerrar */
+.close {
+    position: absolute;
+    right: 10px;
+    top: -20px;
+    color: black;
+    font-size: 40px;
+}
+.close:hover,
+.close:focus {
+    color: darkgrey;
+    cursor: pointer;
+    font-weight: bolder;
+}
+/* Aplicar las animaciones ZOOM de la ventana login*/
+.animacion_zoom {
+    -webkit-animation: animatezoom 0.8s;
+    animation: animatezoom 0.8s
+}
+/* Cambio de escala de 0 a 1 de la ventana del login para la animacion */
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+/* Para la transicion del login */
+@keyframes animatezoom {
+    from {transform: scale(0.6)} 
+    to {transform: scale(1)}
+}
+/*
+========================================
+                MAIN            
+========================================
+*/
+.main {
+    margin: 0 auto;
+    padding: 0 10px;
+    min-height: 87.5vh;
+    max-width: 2000px;
+}
+figure {
+    margin: 0;
+}
+#slides {
+    overflow: hidden; /* Para el control de contenido que es demasiado grande; todo contenido que pasa del área deseado se oculta */
+}
+figure.slider {
+    position: relative;
+    width: 500%;
+    font-size: 0;
+    animation: 30s slidy infinite;
+}
+figure.slider figure {
+    width: 20%;
+    height: auto;
+    display: inline-block;
+}
+figure.slider img { /* Determinación de la altura y anchura, altura máxima y anchura máxima */
+    width: 100%;
+    height: auto;
+    max-height: 900px;
+    max-width: 1920px;
+}
+@keyframes slidy { /* Deslizamiento de las imágenes del slider */
+    0% { left: 0; } /* Al principio (0%) hasta el 20% la primera imágen se queda */
+    10% { left: 0; }
+    20% { left: 0; }
+    30% { left: -100%; } /* Tras progresar al 30%, se desliza la segunda imágen hacia la izquierda hasta el 40% del progreso */
+    40% { left: -100%; }
+    50% { left: -200%; } /* Tras progresar al 50%, se desliza la tercera imágen hacia la izquierda hasta el 60% del progreso y así sucesivamente hasta repetir*/
+    60% { left: -200%; }
+    70% { left: -300%; }
+    80% { left: -300%; }
+    90% { left: -400%; }
+    100% { left: -400% }
+}
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+.producto {
+    margin: 20px 20px;
+    padding: 35px;
+    background-color: ghostwhite;
+}
+.producto img {
+    height: 180px;
+    width: auto;
+    cursor: pointer;
+}
+.producto img:hover {
+    transform: scale(1.08);
+    transition: 0.3s;
+}
+@media screen and (max-width: 950px) {
+    .producto img {
+        height: 150px;
+        width: auto;
+    }
+}
+@media screen and (max-width: 735px) {
+    .producto img {
+        height: 140px;
+        width: auto;
+    }
+}
+@media screen and (max-width: 700px) {
+    .producto img {
+        height: auto;
+        width: 250px;
+    }
+}
+.paradox_separator {
+    padding: 15px 0 15px 0;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    width: 100%;
+    background-color: ghostwhite;
+    text-align: center;
+    font-size: 18.5px;
+    font-weight: bold;
+    transform: scale(1,0.9);
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    color: black;
+    cursor: default;
+}
+.paradox_separator2 {
+    padding: 15px 0 15px 0;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    background-color: ghostwhite;
+    text-align: center;
+    font-size: 18.5px;
+    font-weight: bold;
+    transform: scale(1,0.9);
+    text-transform: uppercase;
+    /*letter-spacing: 10px;*/
+    color: black;
+    cursor: default;
+}
+.paradox_separator2 a {
+    text-decoration: none;
+    color: black;
+    margin-right: 10px;
+}
+.caja_elproducto {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: ghostwhite;
+    justify-content: center;
+    align-items: center;
+    padding: 70px 0;
+    list-style: none;
+}
+.main_elproducto {
+    margin: 0 auto;
+    padding: 0 320px;
+    min-height: 87.5vh;
+}
+.elproducto_img { 
+    margin: 0 20px;
+}
+.elproducto_img img{ /* Para mantener el tamaño uniformemente para cada uno de los productos mostrados */
+    max-width: 425px;
+    max-height: 425px;
+    width: 425px;
+    height: auto;
+}
+.elproducto_info {
+    margin: 0 50px;
+    text-transform: uppercase;
+}
+.caja_elproducto ul {
+    list-style: none;
+}
+#elproducto_nombre, #elproducto_talla, #elproducto_precio, #elproducto_botones, #elproducto_stock {
+    font-size: 18px;
+    padding: 10px;
+}
+.elproducto_botones {
+    display: flex;
+    flex: 40%;
+    align-items: center;
+    justify-content: left;
+}
+.elproducto_botones img{
+    margin-left: 20px ;
+    cursor: pointer;
+    max-height: 425px;
+    max-width: 425px;
+}
+@media screen and (max-width: 1600px) {
+    .main_elproducto {
+        padding: 0 225px;
+    }
+}
+@media screen and (max-width: 1350px) {
+    .main_elproducto {
+        padding: 0 130px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .main_elproducto {
+        padding: 0 80px;
+    }
+}
+@media screen and (max-width: 1080px) {
+    .main_elproducto {
+        padding: 0 20px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .main_elproducto {
+        padding: 0 10px;
+    }
+    .elproducto_img { 
+        margin: 0 10px;
+    }
+    .elproducto_info {
+        margin: 0 10px;
+    }
+}
+@media screen and (max-width: 860px) {
+    .main_elproducto {
+        padding: 0 10px;
+    }
+    .elproducto_img { 
+        margin: 0 10px;
+    }
+    .elproducto_info {
+        margin: 0 10px;
+    }
+}
+@media screen and (max-width: 760px) {
+    .caja_elproducto {
+        display: block;
+        text-align: center;
+    }
+    .elproducto_botones button{
+        width: 100%;
+    }
+    .elproducto_descripcion {
+        padding: 0 20px;
+    }
+}
+@media screen and (max-width:650px) {
+    .elproducto_img img{
+        height: auto; 
+        width: 350px;
+    }
+    .elproducto_botones img{
+        margin-left: 10px;
+    }
+}
+.elproducto_descripcion {
+    display: block;
+    font-size: 18px;
+    padding: 0 80px;
+    text-align: justify;
+}
+#fav-icon-add {
+    opacity: 0.4;
+}
+#fav-icon-add:hover{
+    opacity: 0.7;
+    transition: 0.2s;
+    transform: scale(1.15);
+}
+.main_not_logged {
+    margin: 0 auto;
+    padding: 0 320px;
+    min-height: 81.1vh;
+}
+@media screen and (max-width:1000px) {
+    .main_not_logged {
+        padding: 0 150px;
+    }
+}
+@media screen and (max-width:700px) {
+    .main_not_logged {
+        padding: 0 50px;
+    }
+}
+@media screen and (max-width:470px) {
+    .main_not_logged {
+        padding: 0 ;
+    }
+}
+.caja_mensaje {
+    background-color: ghostwhite;
+    text-align: center;
+    padding: 70px 0;
+    list-style: none;
+    cursor: default;
+}
+.mensaje {
+    margin: 0 50px;
+    text-transform: uppercase;
+}
+.mensaje:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/*
+========================================
+                PERFIL            
+========================================
+*/
+.main_perfil {
+    margin: 0 auto;
+    padding: 0 450px;
+    min-height: 87.5vh;
+}
+@media screen and (max-width: 1600px) {
+    .main_perfil {
+        padding: 0 350px;
+        min-height: 87.5vh;
+    }
+}
+@media screen and (max-width: 1400px) {
+    .main_perfil {
+        padding: 0 280px;
+        min-height: 87.5vh;
+    }
+}
+@media screen and (max-width: 1100px) {
+    .main_perfil {
+        padding: 0 150px;
+        min-height: 87.5vh;
+    }
+}
+@media screen and (max-width: 900px) {
+    .main_perfil {
+        padding: 0 80px;
+        min-height: 87.5vh;
+    }
+}
+@media screen and (max-width: 800px) {
+    .main_perfil {
+        padding: 0 50px;
+        min-height: 87.5vh;
+    }
+}
+@media screen and (max-width: 600px) {
+    .main_perfil {
+        padding: 0 10px;
+        min-height: 87.5vh;
+    }
+}
+.perfil {
+    width: 100%;
+    text-align: center;
+}
+.hola {
+    font-weight: bold;
+    transform: scale(1,0.9);
+    letter-spacing: 5px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.perfil_contenedor {
+    text-align: center;
+    background-color: ghostwhite;
+    border-radius: 5px;
+    width: 100%;
+    cursor: default;
+    margin-bottom: 10px;
+}
+.perfil_contenedor ul {
+    display: inline-block;
+    text-align: left;
+    list-style: none;
+}
+.perfil_detalle_nombre, .perfil_detalle_email {
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+.perfil_opcion {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 100%;
+    background-color: ghostwhite;
+    padding: 50px 0;
+}
+.left_eleccion {
+    list-style: none;
+    font-weight: bold;
+    flex: 45%;
+    margin-left: 50px;
+}
+.left_eleccion-opcion {
+    padding: 10px;
+}
+.left_eleccion-opcion a {
+    text-decoration: none;
+    color: inherit;
+}
+.left_eleccion-opcion a:hover {
+    text-decoration: underline;
+}
+.right_info {
+    display: flex;
+    flex: 60%;
+}
+.right_info ul{
+    list-style: none;
+    padding: 10px;
+}
+.info_titulo {
+    font-weight: bold;
+}
+/*
+========================================
+                REGISTER            
+========================================
+*/
+.formulario{
+    min-height: 83vh;
+    padding: 0 300px;
+    align-content: center;
+    align-items: center;
+    background-color: ghostwhite;
+    margin: 0 250px;
+    margin-bottom: 50px;
+}
+@media screen and (max-width: 1560px) {
+    .formulario{
+        padding: 0 200px;
+    }
+}
+@media screen and (max-width: 1350px) {
+    .formulario{
+        padding: 0 150px;
+        margin: 0 150px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .formulario{
+        margin: 0 75px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .formulario{
+        padding: 0 80px;
+    }
+}
+@media screen and (max-width: 675px) {
+    .formulario{
+        padding: 0 80px;
+        margin: 50px 0;
+    }
+}
+.formulario h1{
+    text-align: center;
+}
+.pais{
+    position: relative;
+    border-radius: 7px;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+#pais{
+    margin-top: 10px;
+}
+.formulario-label{/*Separar el icono*/
+    margin-right: 10px;
+}
+.formulario-error {/*Error al introducir caracteres incorrectos*/
+    font-size: 12px;
+	margin-bottom: 0;
+	display: none;
+    color: #bb2929;
+}
+.formulario-error-activo {
+    display: block;
+    font-size: medium;
+}
+/*
+MENSAJE AL PRESIONAR EL BOTÓN (UNIRSE A NOSOTROS)
+*/
+.mensaje-error {/*Mensaje erroneo*/
+	margin-top: 10px;
+    padding-bottom: 20px;
+	color: #bb2929;
+    text-align: center;
+	display: none;
+}
+.mensaje-error-activo {/*Mensaje erroneo activo*/
+	display: block;
+}
+.mensaje-correcto {/*Mensaje satisfactorio*/
+	margin-top: 10px;
+    padding-bottom: 20px;
+	color: green;
+    text-align: center;
+	display: none;
+}
+.mensaje-correcto-activo {/*Mensaje satisfactorio activo*/
+	display: block;                        
+}
+/*Estilos corrección formulario*/
+.formulario-icono{
+    visibility: hidden;
+}
+.clase-correcta .formulario-icono {/*Clase verde correcta*/
+	color: green;
+    visibility: visible;
+}
+.clase-incorrecta .formulario-label {/*clase roja incorrecto*/ 
+	color: #bb2929;
+    visibility: visible;
+}
+.clase-incorrecta .formulario-icono{
+	color: #bb2929;
+    visibility: visible;
+}
+.clase-incorrecta .formulario-input{
+	color: #bb2929;
+    visibility: visible;
+}
+/*
+========================================
+            AGREGAR PRODUCTO            
+========================================
+*/
+.categoria,
+.talla{
+    position: relative;
+    border-radius: 7px;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+#categoria,
+.talla{
+    margin-top: 10px;
+}
+input[type="file"]{
+    display:none;
+}
+.subir-archivo {
+    color: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    margin: 8px 0px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    background: white;
+}
+.subir-archivo:hover {
+    cursor: pointer;
+}
+.elproducto_img_pedido   img{ /* Para mantener el tamaño uniformemente para cada uno de los productos mostrados */
+    max-width: 425px;
+    max-height: 425px;
+    width: 250px;
+    height: auto;
+    margin-bottom: -15px;
+}
+/*
+========================================
+            CESTA & FAVS           
+========================================
+*/
+.main-2 {
+    margin: 0 auto;
+    padding: 0 300px;
+    min-height: 81.5vh;
+    padding-bottom: 50px;
+    text-align: justify;
+    max-width: 2000px;
+}
+@media screen and (max-width: 1100px) {
+    .main-2{
+    padding: 0 100px;
+    padding-bottom: 50px;
+    }
+}
+@media screen and (max-width: 850px) {
+    .main-2{
+    padding: 0 20px;
+    padding-bottom: 50px;
+    }
+}
+.caja_cesta_fav{
+    display: block;
+    background-color: ghostwhite;
+    text-align: center;
+    align-items: center;
+    padding: 0 20px;
+    list-style: none;
+}
+.caja_cesta_fav ul{
+    display: inline-block;
+    text-align: left;
+    list-style: none;
+}
+.producto_fav {
+    justify-content: center;
+    padding: 35px;
+}
+.producto_fav  img {
+    height: 250px;
+    margin-bottom: -40px;
+    width: auto;
+    cursor: pointer;
+}
+.producto_fav img:hover {
+    transform: scale(1.08);
+    transition: 0.3s;
+}
+.buttonsCestaFav{
+    background-color: ghostwhite;
+    padding: 20px 0;
+}
+/*
+========================================
+                FAQ            
+========================================
+*/
+.faq {    
+    min-height: 85.2vh;
+    max-width: 60%;/*Reducir el tamaño de las preguntas*/
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 32px;
+}
+.faq h1 {
+    margin-top: 0px;
+    margin-bottom: 40px;
+    text-align: center;
+    color: black;
+}
+details { 
+    background-color: ghostwhite;
+    margin-bottom: 16px;
+    border: 1px solid ghostwhite;
+    border-radius: 10px;
+    color: black;
+    position: relative;
+    cursor: pointer;
+}
+details summary { /* Preguntas */
+    font-size: 18px;
+    padding: 14px;
+    cursor: pointer;
+    list-style: none;/* Eliminar los triangulos que salen por defecto al iniciar la pregunta */
+}
+details summary a{ 
+    padding-right: 50px;
+}
+details p {/* Respuestas */
+    padding: 12px;
+    margin: 0 16px 16px 16px;
+    background-color: ghostwhite;
+    border-left: 2px solid black;
+}
+details:hover, details[open] {
+    box-shadow: 0px 0px 4px #000000;
+}
+details[open] {
+    background: #FFFFFF;
+    font-size: medium;
+}
+/*
+========================================
+                FOOTER            
+========================================
+*/
+.footer {
+    min-height: 9.3vh;/* Para que se vea el footer de forma proporcional con las otras cajas. */
+    background-color:#111;
+    width: 100%;
+    text-align: center;
+    max-width: 2000px;
+    margin: 0 auto;
+}
+.ayuda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.ayuda span,.ayuda a {
+    color: white;
+    display: inline;
+    padding: 0 10px 0 0;
+    font-size: 15px;
+    text-decoration: none;
+}
+.ayuda span:hover{
+    color: floralwhite;
+    text-decoration: underline;
+}
+#copyright {
+    cursor:default;
+    font-size: 12px;
+}
+.about {
+    background-color: ghostwhite;
+    padding: 20px 50px 50px 50px;
+    margin-top: 50px;
+}
