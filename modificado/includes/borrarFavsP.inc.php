@@ -2,7 +2,10 @@
     session_start(); 
     /* $_GET['id'] = lo que se pasa por parametro en get */
      if(!isset($_SESSION['favs'])){
-         echo "error";
+        echo "<script>
+            window.location= '../favs.php'
+            alert('Favoritos no existe');
+         </script>";
     }else{
     $favs=$_SESSION['favs'];
     unset($favs[$_GET['id']]);// Se destruye un especifico index de la variable

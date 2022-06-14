@@ -66,7 +66,10 @@ if(isset($_POST["submit"])){
 			$favs=$_SESSION['favs'];
             $_SESSION['favs']=$favs;
 	}else {
-		header("location: ../register.php?error");
+		echo "<script>
+                window.location= '../index.php'
+				alert('Registro Incorrecto');
+    	</script>";
 	}
 }
 

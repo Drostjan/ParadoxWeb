@@ -23,9 +23,9 @@ if(!isset($_REQUEST['id'])){
 }
 ?>
 <div class="main-2">
-    <div class="container">
-        <h1>Order Status</h1>
-        <p>Your order has submitted successfully. Order ID is #<?php echo $_GET['id']; ?></p>
+<div class="about">        
+    <h1>Estado de Pedido</h1>
+        <p>TU pedido ha sido realizado correctamente. Tu codigo de pedido es #<?php echo md5($_GET['id']); ?></p>
     </div>
     <a href="home.php" class="btn btn-dark"><i class="glyphicon glyphicon-menu-left"></i> Volver al Inicio</a>
 </div>

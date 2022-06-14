@@ -55,7 +55,10 @@ if(isset($_POST["submit"])){
 		$con->execute();
 		header("location: ../formulario_producto.php");
 	}else {
-		header("location: ../formulario_producto.php?error");
+		echo "<script>
+            window.location= '../formulario_producto.php'
+            alert('Formulario rellenado incorrecta mente');
+        </script>";
 	}
 }
 

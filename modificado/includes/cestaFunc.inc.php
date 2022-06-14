@@ -35,36 +35,63 @@
             $deleteItem = $cesta->remove($_REQUEST['id']);
             header("Location: ../cesta.php");
         }elseif($_REQUEST['action'] == 'order'){
-            $create = date("Y-m-d H:i:s");
-            $insertOrder = $conexion->prepare("INSERT INTO pedidos (cliente_id, precio_total, creacion, modificacion) VALUES (?,?,?,?)");
-            $insertOrder->bind_param("ssss", $user , $cesta->total() ,$create,date("Y-m-d H:i:s"));
-            $insertOrder->execute();
             $cestaItems = $cesta->contents();
-            if($insertOrder){
-                $orderID = $conexion->insert_id;
+            foreach($cestaItems as $item){
+                $obtener = $conexion->prepare("SELECT stock FROM productos WHERE id_producto=?");
+                $obtener->bind_param("i",$item['id']);
+                $obtener->execute();
+                $resultado = $obtener->get_result();
+                $fila = $resultado->fetch_assoc();
                 
-                foreach($cestaItems as $item){
-                    $insertOrderItems = $conexion->prepare("INSERT INTO detalle_pedido (id_pedido, id_producto, qty) VALUES (?,?,?);");
-                    $insertOrderItems->bind_param("iii",$orderID,$item['id'],$item['qty']);
-                    $insertOrderItems->execute();
-
-                    
-                    
-                }
-
-                if($insertOrderItems){
-                    $cesta->destroy();
-                    header("Location: ../pedido_realizado.php?id=".$_SESSION['userID'] );
+                if($fila['stock'] < $item['qty']){
+                    echo "<script>
+                        window.location= '../pedido.php'
+                        alert('Cantidad no disponible');
+                    </script>";
                 }else{
-                    header("Location: ../pedido.php");
+                    $create = date("Y-m-d H:i:s");
+                    $insertOrder = $conexion->prepare("INSERT INTO pedidos (cliente_id, precio_total, creacion, modificacion) VALUES (?,?,?,?)");
+                    $insertOrder->bind_param("ssss", $user , $cesta->total() ,$create,date("Y-m-d H:i:s"));
+                    $insertOrder->execute();
+                    
+                    if($insertOrder){
+                        $orderID = $conexion->insert_id;
+                        $insertOrderItems = $conexion->prepare("INSERT INTO detalle_pedido (id_pedido, id_producto, qty) VALUES (?,?,?);");
+                        $insertOrderItems->bind_param("iii",$orderID,$item['id'],$item['qty']);
+                        $insertOrderItems->execute();
+                        if($insertOrderItems){
+                            $item['qty'] = $fila['stock'] - $item['qty'];
+                            $minus = $conexion->prepare("UPDATE productos SET stock= ? WHERE id_producto=?");
+                            $minus->bind_param("ii",$item['qty'],$item['id']);
+                            $minus->execute();
+
+                            $cesta->destroy();
+                            header("Location: ../pedido_realizado.php?id=".$_SESSION['userID'] );
+                        }else{
+                            echo "<script>
+                                window.location= '../pedido.php'
+			        	        alert('Error insertando pedido');
+    	                    </script>";
+                        }
+                    }else{
+                        echo "<script>
+                                window.location= '../pedido.php'
+                                alert('Error realizando pedido');
+                            </script>";
+                    }
                 }
-            }else{
-                header("Location: ../pedido.php");
             }
+            
         }else{
-            header("Location: ../home.php");
+            echo "<script>
+                        window.location= '../pedido.php'
+				        alert('Accion incorrecta');
+    	            </script>";
         }
     }else{
-        header("Location: ../home.php");
+        echo "<script>
+            window.location= '../cesta.php'
+            alert('Accion nula');
+        </script>";
     }
 ?>

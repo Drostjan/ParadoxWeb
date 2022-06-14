@@ -48,6 +48,13 @@
                         <a class="btn btn-success" href="includes/cestaFunc.inc.php?action=add&id=<?php echo $it; ?>">Añadir a la cesta</a>
                         <a href="includes/fav.inc.php?id=<?php echo $it; ?>"><img id="fav-icon-add" src="assets/images/favorites.png" width="28" height="28" title="Añadir a favoritos"></a>
                     </div>
+                    <?php
+                            if($stock < 15){
+                                echo "<a style='color:red'> Quedan ".$stock." en stock</a>";
+                            }elseif ($stock == 1){
+                                echo "<a style='color:red'> Queda ".$stock." en stock</a>";
+                            }
+                        ?>
                 </ul>
             </div>
             <div class="elproducto_descripcion">

@@ -31,7 +31,12 @@ if(isset($_POST["login"])){
 		$_SESSION['f'] == false;
 		header("location: ../home.php");
 	}else{
-		header("location: ../register.php?error");
+		echo "<script>
+                window.location= '../index.php'
+				alert('Login Incorrecto');
+    	</script>";
+
+
 	}
 
 }
