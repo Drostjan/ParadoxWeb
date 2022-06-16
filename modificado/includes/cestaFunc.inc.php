@@ -3,7 +3,6 @@
     include 'cesta.inc.php';
     $cesta = new Cart;
     require_once 'db.inc.php';
-    $user = $_SESSION['userID'];
 
     if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         if($_REQUEST['action'] == 'add' && !empty($_REQUEST['id'])){
@@ -34,9 +33,11 @@
         }elseif($_REQUEST['action'] == 'remove' && !empty($_REQUEST['id'])){
             $deleteItem = $cesta->remove($_REQUEST['id']);
             header("Location: ../cesta.php");
-        }elseif($_REQUEST['action'] == 'order'){
+        }elseif($_REQUEST['action'] == 'order' && $cesta->total_items() > 0 ){
             $cestaItems = $cesta->contents();
+            $stop = FALSE;
             foreach($cestaItems as $item){
+
                 $obtener = $conexion->prepare("SELECT stock FROM productos WHERE id_producto=?");
                 $obtener->bind_param("i",$item['id']);
                 $obtener->execute();
@@ -44,54 +45,50 @@
                 $fila = $resultado->fetch_assoc();
                 
                 if($fila['stock'] < $item['qty']){
-                    echo "<script>
-                        window.location= '../pedido.php'
-                        alert('Cantidad no disponible');
-                    </script>";
+                    $_SESSION['errorMessage'] = "Cantidad no disponible";
+                    header("Location: ../pedido.php");
+                    $stop = TRUE;
                 }else{
-                    $create = date("Y-m-d H:i:s");
-                    $insertOrder = $conexion->prepare("INSERT INTO pedidos (cliente_id, precio_total, creacion, modificacion) VALUES (?,?,?,?)");
-                    $insertOrder->bind_param("ssss", $user , $cesta->total() ,$create,date("Y-m-d H:i:s"));
-                    $insertOrder->execute();
-                    
-                    if($insertOrder){
-                        $orderID = $conexion->insert_id;
-                        $insertOrderItems = $conexion->prepare("INSERT INTO detalle_pedido (id_pedido, id_producto, qty) VALUES (?,?,?);");
-                        $insertOrderItems->bind_param("iii",$orderID,$item['id'],$item['qty']);
-                        $insertOrderItems->execute();
-                        if($insertOrderItems){
-                            $item['qty'] = $fila['stock'] - $item['qty'];
-                            $minus = $conexion->prepare("UPDATE productos SET stock= ? WHERE id_producto=?");
-                            $minus->bind_param("ii",$item['qty'],$item['id']);
-                            $minus->execute();
-
-                            $cesta->destroy();
-                            header("Location: ../pedido_realizado.php?id=".$_SESSION['userID'] );
-                        }else{
-                            echo "<script>
-                                window.location= '../pedido.php'
-			        	        alert('Error insertando pedido');
-    	                    </script>";
-                        }
+                    if($stop == TRUE){
+                        $_SESSION['errorMessage'] = "Cantidad no disponible";
+                        header("Location: ../pedido.php");
                     }else{
-                        echo "<script>
-                                window.location= '../pedido.php'
-                                alert('Error realizando pedido');
-                            </script>";
+                        $create = date("Y-m-d H:i:s");
+                        $insertOrder = $conexion->prepare("INSERT INTO pedidos (cliente_id, precio_total, creacion, modificacion) VALUES (?,?,?,?)");
+                        $insertOrder->bind_param("ssss", $_SESSION['userID'] , $cesta->total() ,$create,date("Y-m-d H:i:s"));
+                        $insertOrder->execute();
+                        
+                        if($insertOrder){
+                            $orderID = $conexion->insert_id;
+                            $insertOrderItems = $conexion->prepare("INSERT INTO detalle_pedido (id_pedido, id_producto, qty) VALUES (?,?,?);");
+                            $insertOrderItems->bind_param("iii",$orderID,$item['id'],$item['qty']);
+                            $insertOrderItems->execute();
+                            if($insertOrderItems){
+                                $item['qty'] = $fila['stock'] - $item['qty'];
+                                $minus = $conexion->prepare("UPDATE productos SET stock= ? WHERE id_producto=?");
+                                $minus->bind_param("ii",$item['qty'],$item['id']);
+                                $minus->execute();
+
+                                $cesta->destroy();
+                                header("Location: ../pedido_realizado.php?id=".$_SESSION['userID'] );
+                            }else{
+                                $_SESSION['errorMessage'] = "Error insertando pedido";
+                                header("Location: ../pedido.php");
+                            }
+                        }else{
+                            $_SESSION['errorMessage'] = "Error realizando pedido";
+                            header("Location: ../pedido.php");
+                        }
                     }
                 }
             }
             
         }else{
-            echo "<script>
-                        window.location= '../pedido.php'
-				        alert('Accion incorrecta');
-    	            </script>";
+            $_SESSION['errorMessage'] = "Accion incorrecta";
+            header("Location: ../pedido.php");
         }
     }else{
-        echo "<script>
-            window.location= '../cesta.php'
-            alert('Accion nula');
-        </script>";
+        $_SESSION['errorMessage'] = "Accion incorrecta";
+        header("Location: ../pedido.php");
     }
 ?>

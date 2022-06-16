@@ -2,6 +2,9 @@
 include 'includes/cesta.inc.php';
 $cesta = new Cart;
 
+
+
+
 if($cesta->total_items() <= 0){
     header("Location: cesta.php");
 }
@@ -20,6 +23,8 @@ if($cesta->total_items() <= 0){
     }else{
         include_once 'seccion-menu2.php';
     }
+
+    
     ?>
     <style>
     .container{width: 100%;padding: 50px;}
@@ -86,6 +91,18 @@ if($cesta->total_items() <= 0){
      </div>
 
 </div>
-<?php
-        include_once 'seccion-footer.php'
+<?php   
+
+                        
+        include_once 'seccion-footer.php';
+
+        if(isset($_SESSION['errorMessage'])){
+            echo "<script >
+                    alert('" . $_SESSION['errorMessage'] . "');
+                  </script>";
+            unset($_SESSION['errorMessage']);
+        
+        }else{
+            
+        }
         ?>

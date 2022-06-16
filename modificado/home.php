@@ -39,5 +39,5 @@
         </div>
     </div>
     <?php
-            include_once 'seccion-footer.php'
+            include_once 'seccion-footer.php';
         ?>
