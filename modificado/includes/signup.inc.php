@@ -57,14 +57,17 @@ if(isset($_POST["submit"])){
 		$stmt->execute();
 		session_start();
 		header("location: ../home.php");
+		
 		$_SESSION['session'] = TRUE;
 		$_SESSION['user'] = $nombre." ".$apellidos;
 		$_SESSION['email'] = $email;
 		$_SESSION['telefono'] = $telefono;
+		
 		$cesta=$_SESSION['cesta'];
-            $_SESSION['cesta']=$cesta;
-			$favs=$_SESSION['favs'];
-            $_SESSION['favs']=$favs;
+		$_SESSION['cesta']=$cesta;
+		
+		$favs=$_SESSION['favs'];
+            	$_SESSION['favs']=$favs;
 	}else {
 		echo "<script>
                 window.location= '../index.php'
