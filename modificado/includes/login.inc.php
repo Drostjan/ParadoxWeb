@@ -18,17 +18,18 @@ if(isset($_POST["login"])){
 
 	if($aux == TRUE){
 		session_start();
-
 		/* INICIALIZA variables de session */
 		$_SESSION['session'] = TRUE;
+		
 		$_SESSION['email'] = $username;
 		$_SESSION['user'] = $fila['nombre']." ".$fila['apellidos'];
-		$_SESSION['userID'] = $fila['id_cliente'];
+		
 		$cesta=$_SESSION['cesta'];
-        $_SESSION['cesta']=$cesta;
+        	$_SESSION['cesta']=$cesta;
+		
 		$favs=$_SESSION['favs'];
-        $_SESSION['favs']=$favs;
-		$_SESSION['f'] == false;
+        	$_SESSION['favs']=$favs;
+		
 		header("location: ../home.php");
 	}else{
 		echo "<script>
